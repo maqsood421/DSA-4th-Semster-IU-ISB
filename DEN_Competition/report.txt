@@ -1,0 +1,2 @@
+2021-06-01, Server1, Pattern1, 3 times
+2021-06-01, Server1, Pattern2, 1 time

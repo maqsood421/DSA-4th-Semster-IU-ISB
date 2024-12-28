@@ -1,0 +1,4 @@
+Pattern1: login failed, 5
+Pattern2: transaction exceeded, 3
+Server1: -5
+Server2: +3
