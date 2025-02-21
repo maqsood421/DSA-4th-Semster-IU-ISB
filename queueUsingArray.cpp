@@ -73,9 +73,6 @@ class Queue {
 };
 
 
-
-
-
 void displayQueue(Queue &q) {
     while(!q.isEmpty()) {
         cout << q.peek() << ' ';

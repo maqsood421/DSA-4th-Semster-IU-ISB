@@ -1,87 +1,96 @@
-#include<iostream>
+#include <iostream>
 using namespace std;
-#define SIZE 20
 
-class queue{
-    char* arr;
-    int front;
-    int rear;
-
+class Queue {
+    private:
+        int* arr;
+        int front;
+        int rear;
+        int size;
+        int itemCount;
     public:
-
-    queue(){
-arr =new char[SIZE];
-     front=-1;
-     rear=-1;
-    }
-     
-
-
-     void enqueue(char val){
-        if(rear==SIZE-1){
-            cout<<"queue is full";
-            return;
+        // Constructor
+        Queue() {
+            size = 100;
+            arr = new int[size];
+            front = rear = -1;
+            itemCount = 0;
         }
-        rear++;
-        arr[rear]=val;
-        if(front==-1){
-            front++;
+        // Destructor
+        ~Queue() {
+            delete[] arr;
         }
-
-
-     }
-     void dequeue(){
-        if(front==-1 && front>rear){
-            cout<<"queue is empty";
-            return;
+        // Enqueue operation
+        void enqueue(int value) {
+            if(isFull()) {
+                cout << "The queue is Full.\n";
+                return;
+            }
+            if (isEmpty()) front = 0; // Ensure front is updated for the first element
+            rear = (rear + 1) % size;
+            arr[rear] = value;
+            itemCount++;
+            cout << "Enqueued Successfully!\n";
         }
-        front++;
-     }
-
-     char peek(){
-        if(front==-1 && front>rear){
-            cout<<"queue is empty";
-            return -1;
+        // Dequeue operation
+        int dequeue() {
+            if(isEmpty()) {
+                cout << "The queue is Empty!\n";
+                return -1;
+            }
+            int result = arr[front];
+            if (front == rear) { // Reset queue if it becomes empty
+                makeNull();
+            } else {
+                front = (front + 1) % size;
+                itemCount--;
+            }
+            return result;
         }
-        return arr[front];
-     }
-    bool empty(){
-        if(front==-1 && front>rear){
-            return true;
+        // Peek operation
+        int peek() {
+            if(isEmpty()) {
+                throw runtime_error("Queue is empty!\n");
+            }
+            return arr[front];
         }
-        return false;
-    }
-
-    void display(){
-        if(front==-1 && front>rear){
-            cout<<"queue is empty";
-            return;
+        // Check if the queue is full
+        bool isFull() {
+            return ((rear + 1) % size) == front;
         }
-        int i = front;
-        while(i <= rear){
-            cout << arr[i++] << '\n';
+        // Check if the queue is empty
+        bool isEmpty() {
+            return front == -1;
         }
-    }
-
+        // Reset the queue
+        void makeNull() {
+            front = rear = -1;
+            itemCount = 0;
+        }
+        // returns the total elements fo the queue
+        int getSize() {
+            return itemCount;
+        }
 };
 
-int main(){
 
-    queue q;
-    q.enqueue('A');
-    q.enqueue('B');
-    q.enqueue('C');
-    q.dequeue();
-    q.enqueue('D');
-    q.enqueue('E');
-    q.display();
-    cout<<"qustomer to be served is: "<<q.peek();
-    cout<<endl;
-    q.dequeue();
-    q.dequeue();
-    q.display();
-    // cout << q.front << endl;
+void displayQueue(Queue &q) {
+    cout << "Displaying the Queue: ";
+    while(!q.isEmpty()) {
+        cout << q.peek() << ' ';
+        q.dequeue();
+    }
+}
 
+int main() {
+    Queue q;
+    q.enqueue(1);
+    q.enqueue(2);
+    q.enqueue(3);
+    q.enqueue(4);
 
-
+    displayQueue(q);
+    cout << '\n';
+    
+    return EXIT_SUCCESS;
 }

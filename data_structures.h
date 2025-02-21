@@ -131,9 +131,55 @@ public:
 
 
 // Queue Data Structure
+template<class T>
+class qNode {
+    public:
+        T data;
+        qNode* next;
+        qNode(T val): data(val), next(NULL) {} // constructor
+};
+
+template <class T>
 class Queue {
     private:
-    
+        qNode<T>* front;
+        qNode<T>* rear;
+    public:
+        // constructor
+        Queue() {
+            front = NULL;
+            rear = NULL;
+        }
+        // insert the element into the queue
+        void enqueue(T val) {
+            qNode<T>* temp = new qNode(val);
+            if(!rear) {
+                rear = temp;
+                front = temp;
+                return;
+            }
+            temp->next = rear;
+            rear = temp;
+        }
+        // delete the first element of the queue if exists
+        void dequeue() {
+            if(!front) return;
+            
+            qNode<T>* temp = front;
+            front = front->next;
+            delete temp;
+        }
+        // returns the front element            
+        T peek() {
+            if(!front) {
+                exit(0);
+            }
+            return front->data;
+        }
+        // checks if queue is empty or not
+        bool isEmpty() {
+            return front == NULL;
+        }
 };
 
 

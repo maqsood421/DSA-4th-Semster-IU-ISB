@@ -24,13 +24,11 @@ class Queue {
             if(!rear) {
                 rear = temp;
                 front = temp;
-                cout << "Enqueued Successfully!\n";
                 return;
             }
             
             rear->next = temp;
             rear = temp;  // Update the rear pointer
-            cout << "Enqueued Successfully!\n";
         }
 
         void dequeue() {
@@ -42,7 +40,7 @@ class Queue {
             Node* temp = front;
             front = front->next;
             delete temp;
-            cout << "Dequeued successfully!\n";
+            if (!front) rear = NULL;  // Handle case when queue becomes empty
         }
 
         int peek() {
@@ -58,7 +56,6 @@ class Queue {
             return front == NULL;
         }
 
-        // For displaying the queue without modifying it
         void display() {
             Node* temp = front;
             while(temp) {
@@ -69,17 +66,33 @@ class Queue {
         }
 };
 
-int main(void) {
+void reverseQueue(Queue& q) {
+    if(q.isEmpty()) return;
 
+    int num = q.peek();
+    q.dequeue();
+    // Recursive call
+    reverseQueue(q);
+    // Enqueue after recursion to reverse order
+    q.enqueue(num);
+}
+
+
+
+
+int main() {
     Queue q;
     q.enqueue(10);
     q.enqueue(20);
     q.enqueue(30);
 
-    cout << "Queue elements: ";
-    q.display(); // Display elements without dequeuing
+    cout << "Original Queue: ";
+    q.display();
+    
+    reverseQueue(q);
 
-    cout << "After displaying, is queue empty? " << (q.isEmpty() ? "Yes" : "No") << '\n';
-
+    cout << "Reversed Queue: ";
+    q.display();
+    
     return EXIT_SUCCESS;
 }
